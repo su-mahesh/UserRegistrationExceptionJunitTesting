@@ -49,11 +49,15 @@ public class UserRegistration {
         return Pattern.matches(mobileNumberPattern, mobileNumber);
     }
 
-    public boolean passwordesting(String password) {
+    public boolean passwordTesting(String password) {
         return Pattern.matches(passwordPattern, password);
     }
+    public boolean emailTesting(String email) {
+        return Pattern.matches(emailAddressPattern, email);
+    }
+
     public void clearEmailList(){
-        int i = 0;
+        int i;
         System.out.println("\n***must accept list***");
 
         for(i = 0; i < emailAcceptList.length; i++ ){
@@ -88,7 +92,7 @@ public class UserRegistration {
         System.out.println(userRegistration.lastNameTesting("Kangude"));
         System.out.println(userRegistration.emailAddressTesting("abc@com.in"));
         System.out.println(userRegistration.mobileNumberTesting("91 8473652883"));
-        System.out.println(userRegistration.passwordesting("fefe&Jrlm9fefef"));
+        System.out.println(userRegistration.passwordTesting("fefe&Jrlm9fefef"));
         userRegistration.clearEmailList();
 
     }
