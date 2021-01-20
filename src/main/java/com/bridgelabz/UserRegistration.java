@@ -33,24 +33,83 @@ public class UserRegistration {
             "abc@gmail.com.aa.au"
     };
 
-    public boolean firstNameTesting(String firstName) {
-        return Pattern.matches(firstNamePattern, firstName);
+    public boolean firstNameTesting(String firstName)throws UserRegistrationException {
+        try {
+            if(!Pattern.matches(firstNamePattern, firstName)){
+                if (firstName.length() == 0)
+                    throw new UserRegistrationException(UserRegistrationException.ExceptionType.ENTERED_EMPTY, "please enter proper field");
+                else if(!Character.isUpperCase(firstName.charAt(0)))
+                    throw new UserRegistrationException(UserRegistrationException.ExceptionType.ENTERED_FIRST_LETTER_SMALL, "please enter proper field");
+                else if (firstName.length() < 3 )
+                    throw new UserRegistrationException(UserRegistrationException.ExceptionType.ENTERED_LESS_THAN_3_LETTERS, "please enter proper field");
+
+            }
+        return  Pattern.matches(firstNamePattern, firstName);
+        }catch (NullPointerException e){
+        throw new UserRegistrationException(UserRegistrationException.ExceptionType.ENTERED_NULL, "please enter proper message");
+        }
     }
 
-    public boolean lastNameTesting(String lastName) {
-        return Pattern.matches(lastNamePattern, lastName);
+    public boolean lastNameTesting(String lastName) throws UserRegistrationException{
+        try {
+        if(!Pattern.matches(lastNamePattern, lastName)){
+            if(!Character.isUpperCase(lastName.charAt(0)))
+                throw new UserRegistrationException(UserRegistrationException.ExceptionType.ENTERED_FIRST_LETTER_SMALL, "please enter proper field");
+            else if (lastName.length() < 3)
+                throw new UserRegistrationException(UserRegistrationException.ExceptionType.ENTERED_LESS_THAN_3_LETTERS, "please enter proper field");
+
+        }
+        return  Pattern.matches(firstNamePattern, lastName);
+
+
+    }catch (NullPointerException e){
+        throw new UserRegistrationException(UserRegistrationException.ExceptionType.ENTERED_NULL, "please enter proper message");
+    }
     }
 
-    public boolean emailAddressTesting(String emailAddress) {
-        return Pattern.matches(emailAddressPattern, emailAddress);
+    public boolean emailAddressTesting(String emailAddress) throws UserRegistrationException {
+
+        try {
+            if(!Pattern.matches(emailAddressPattern, emailAddress)){
+                if(!emailAddress.contains("@"))
+                    throw new UserRegistrationException(UserRegistrationException.ExceptionType.NO_AT_SYMBOL, "please enter proper field");
+                else if (emailAddress.charAt(0) == '.')
+                    throw new UserRegistrationException(UserRegistrationException.ExceptionType.SHOULD_NOT_START_WITH_DOT, "please enter proper field");
+            }
+            return  Pattern.matches(emailAddressPattern, emailAddress);
+        }catch (NullPointerException e){
+            throw new UserRegistrationException(UserRegistrationException.ExceptionType.ENTERED_NULL, "please enter proper message");
+        }
     }
 
-    public boolean mobileNumberTesting(String mobileNumber) {
-        return Pattern.matches(mobileNumberPattern, mobileNumber);
+    public boolean mobileNumberTesting(String mobileNumber)throws UserRegistrationException{
+        try {
+            if(!Pattern.matches(mobileNumberPattern, mobileNumber)){
+                if(mobileNumber.length() < 13)
+                    throw new UserRegistrationException(UserRegistrationException.ExceptionType.ENTERED_LESS_NUMBERS, "please enter proper field");
+                else if (mobileNumber.length() > 13)
+                    throw new UserRegistrationException(UserRegistrationException.ExceptionType.ENTERED_MORE_NUMBERS, "please enter proper field");
+                else if (!mobileNumber.contains(" "))
+                    throw new UserRegistrationException(UserRegistrationException.ExceptionType.SPACE_NOT_ENTERED, "please enter proper field");
+            }
+            return  Pattern.matches(mobileNumberPattern, mobileNumber);
+        }catch (NullPointerException e){
+            throw new UserRegistrationException(UserRegistrationException.ExceptionType.ENTERED_NULL, "please enter proper message");
+        }
     }
 
-    public boolean passwordTesting(String password) {
-        return Pattern.matches(passwordPattern, password);
+    public boolean passwordTesting(String password) throws UserRegistrationException {
+        try {
+        if(!Pattern.matches(passwordPattern, password)){
+            if(password.length() < 8)
+                throw new UserRegistrationException(UserRegistrationException.ExceptionType.ENTERED_LESS_THAN_8_CHARS, "please enter proper field");
+            else if (password.contains(" "))
+                throw new UserRegistrationException(UserRegistrationException.ExceptionType.CONTAINS_SPACE, "please enter proper field");
+        }
+        return  Pattern.matches(passwordPattern, password);
+    }catch (NullPointerException e){
+        throw new UserRegistrationException(UserRegistrationException.ExceptionType.ENTERED_NULL, "please enter proper message");
+    }
     }
     public boolean emailTesting(String email) {
         return Pattern.matches(emailAddressPattern, email);
@@ -84,7 +143,7 @@ public class UserRegistration {
                 System.out.println("pattern did not matched\n");
         }
     }
-    public static void main(String[] args) {
+    public static void main(String[] args) throws UserRegistrationException {
 
         UserRegistration userRegistration = new UserRegistration();
 
