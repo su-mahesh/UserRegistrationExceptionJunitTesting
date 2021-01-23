@@ -14,12 +14,12 @@ public class EmailParameterisedTest {
 
      UserRegistration userRegistration;
 
-        private String email;
+        private String emailAddress;
         private boolean expectedResult;
 
-        public EmailParameterisedTest(String email, boolean expectedResult){
+        public EmailParameterisedTest(String emailAddress, boolean expectedResult){
             super();
-            this.email = email;
+            this.emailAddress = emailAddress;
             this.expectedResult = expectedResult;
         }
 
@@ -29,7 +29,7 @@ public class EmailParameterisedTest {
         }
 
         @Parameterized.Parameters
-        public static Collection input(){
+        public static Collection<Object[]> input(){
             return Arrays.asList(new Object[][] {{"abc-100@yahoo.com", true}, {"abc.100@yahoo.com", true},
                     {"abc111@abc.com", true}, {"abc-100@abc.net", true}, {"abc.100@abc.com.au", true}, {"abc@1.com", true},
                     {"abc@gmail.com.com", true}, {"abc+100@gmail.com", true},
@@ -40,8 +40,8 @@ public class EmailParameterisedTest {
                     {"a@b.com", false}});
         }
 
-        @Test
-        public void testEmailAddressTest(){
-         //   Assert.assertEquals(expectedResult, userRegistration.emailAddressTesting(email));
-        }
+    @Test
+    public void testEmailAddressTest(){
+            Assert.assertEquals(expectedResult, userRegistration.validateEmailAddressParameters(emailAddress));
+    }
 }

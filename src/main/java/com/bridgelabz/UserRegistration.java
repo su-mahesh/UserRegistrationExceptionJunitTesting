@@ -1,12 +1,17 @@
 package com.bridgelabz;
 import java.util.regex.Pattern;
 
-public class UserRegistration {
+interface UserInputValidate{
+
+    boolean validateInput(String pattern, String input);
+}
+public class UserRegistration implements UserInputValidate{
     final private String firstNamePattern = "[A-Z][a-z]{2,}";
     final private String lastNamePattern = "[A-Z][a-z]{2,}";
     final private String emailAddressPattern = "[A-Za-z0-9_][+A-Za-z0-9_-]*[.]?[+A-Za-z0-9_-]+[@]([A-Za-z0-9]+[.][A-Za-z]{2,63}|[A-Za-z0-9-]{2,}[.][A-Za-z0-9]{2,63}[.][A-Za-z]{2,3})";
     final private String mobileNumberPattern = "^[1-9][0-9]{0,2}\\s[0-9]{10}";
     final private String passwordPattern = "^(?=.{8,20}$)(?=.*[0-9])(?=.*[A-Z])[A-Za-z0-9]*[^A-Za-z0-9][A-Za-z0-9]*$";
+
     String[] emailAcceptList = new String[]{"abc@yahoo.com",
             "abc-100@yahoo.com",
             "abc.100@yahoo.com",
@@ -32,88 +37,65 @@ public class UserRegistration {
             "abc@gmail.com.1a",
             "abc@gmail.com.aa.au"
     };
+    @Override
+    public boolean validateInput(String pattern, String input) {
+        return !Pattern.matches(pattern, input);
+    }
 
-    public boolean firstNameTesting(String firstName)throws UserRegistrationException {
-        try {
-            if(!Pattern.matches(firstNamePattern, firstName)){
-                if (firstName.length() == 0)
-                    throw new UserRegistrationException(UserRegistrationException.ExceptionType.ENTERED_EMPTY, "please enter proper field");
-                else if(!Character.isUpperCase(firstName.charAt(0)))
-                    throw new UserRegistrationException(UserRegistrationException.ExceptionType.ENTERED_FIRST_LETTER_SMALL, "please enter proper field");
-                else if (firstName.length() < 3 )
-                    throw new UserRegistrationException(UserRegistrationException.ExceptionType.ENTERED_LESS_THAN_3_LETTERS, "please enter proper field");
-
-            }
-        return  Pattern.matches(firstNamePattern, firstName);
+    public boolean validateFirstName(String firstName)throws UserRegistrationException {
+        try{
+            if(validateInput(firstNamePattern, firstName))
+                throw new UserRegistrationException(UserRegistrationException.ExceptionType.INVALID_INPUT, "please enter proper field");
+            return true;
         }catch (NullPointerException e){
-        throw new UserRegistrationException(UserRegistrationException.ExceptionType.ENTERED_NULL, "please enter proper message");
+        throw new UserRegistrationException(UserRegistrationException.ExceptionType.ENTERED_NULL, "please enter proper field");
         }
     }
 
-    public boolean lastNameTesting(String lastName) throws UserRegistrationException{
-        try {
-        if(!Pattern.matches(lastNamePattern, lastName)){
-            if(!Character.isUpperCase(lastName.charAt(0)))
-                throw new UserRegistrationException(UserRegistrationException.ExceptionType.ENTERED_FIRST_LETTER_SMALL, "please enter proper field");
-            else if (lastName.length() < 3)
-                throw new UserRegistrationException(UserRegistrationException.ExceptionType.ENTERED_LESS_THAN_3_LETTERS, "please enter proper field");
-
-        }
-        return  Pattern.matches(firstNamePattern, lastName);
-
-
-    }catch (NullPointerException e){
-        throw new UserRegistrationException(UserRegistrationException.ExceptionType.ENTERED_NULL, "please enter proper message");
-    }
-    }
-
-    public boolean emailAddressTesting(String emailAddress) throws UserRegistrationException {
-
-        try {
-            if(!Pattern.matches(emailAddressPattern, emailAddress)){
-                if(!emailAddress.contains("@"))
-                    throw new UserRegistrationException(UserRegistrationException.ExceptionType.NO_AT_SYMBOL, "please enter proper field");
-                else if (emailAddress.charAt(0) == '.')
-                    throw new UserRegistrationException(UserRegistrationException.ExceptionType.SHOULD_NOT_START_WITH_DOT, "please enter proper field");
-            }
-            return  Pattern.matches(emailAddressPattern, emailAddress);
+    public boolean validateLastName(String lastName)throws UserRegistrationException {
+        try{
+            if(validateInput(lastNamePattern, lastName))
+                throw new UserRegistrationException(UserRegistrationException.ExceptionType.INVALID_INPUT, "please enter proper field");
+            return true;
         }catch (NullPointerException e){
-            throw new UserRegistrationException(UserRegistrationException.ExceptionType.ENTERED_NULL, "please enter proper message");
+            throw new UserRegistrationException(UserRegistrationException.ExceptionType.ENTERED_NULL, "please enter proper field");
         }
     }
 
-    public boolean mobileNumberTesting(String mobileNumber)throws UserRegistrationException{
-        try {
-            if(!Pattern.matches(mobileNumberPattern, mobileNumber)){
-                if(mobileNumber.length() < 13)
-                    throw new UserRegistrationException(UserRegistrationException.ExceptionType.ENTERED_LESS_NUMBERS, "please enter proper field");
-                else if (mobileNumber.length() > 13)
-                    throw new UserRegistrationException(UserRegistrationException.ExceptionType.ENTERED_MORE_NUMBERS, "please enter proper field");
-                else if (!mobileNumber.contains(" "))
-                    throw new UserRegistrationException(UserRegistrationException.ExceptionType.SPACE_NOT_ENTERED, "please enter proper field");
-            }
-            return  Pattern.matches(mobileNumberPattern, mobileNumber);
+    public boolean validateEmailAddress(String emailAddress)throws UserRegistrationException {
+        try{
+            if(validateInput(emailAddressPattern, emailAddress))
+                throw new UserRegistrationException(UserRegistrationException.ExceptionType.INVALID_INPUT, "please enter proper field");
+            return true;
         }catch (NullPointerException e){
-            throw new UserRegistrationException(UserRegistrationException.ExceptionType.ENTERED_NULL, "please enter proper message");
+            throw new UserRegistrationException(UserRegistrationException.ExceptionType.ENTERED_NULL, "please enter proper field");
         }
     }
 
-    public boolean passwordTesting(String password) throws UserRegistrationException {
-        try {
-        if(!Pattern.matches(passwordPattern, password)){
-            if(password.length() < 8)
-                throw new UserRegistrationException(UserRegistrationException.ExceptionType.ENTERED_LESS_THAN_8_CHARS, "please enter proper field");
-            else if (password.contains(" "))
-                throw new UserRegistrationException(UserRegistrationException.ExceptionType.CONTAINS_SPACE, "please enter proper field");
+    public boolean validatePassword(String password)throws UserRegistrationException {
+        try{
+            if(validateInput(passwordPattern, password))
+                throw new UserRegistrationException(UserRegistrationException.ExceptionType.INVALID_INPUT, "please enter proper field");
+            return true;
+        }catch (NullPointerException e){
+            throw new UserRegistrationException(UserRegistrationException.ExceptionType.ENTERED_NULL, "please enter proper field");
         }
-        return  Pattern.matches(passwordPattern, password);
-    }catch (NullPointerException e){
-        throw new UserRegistrationException(UserRegistrationException.ExceptionType.ENTERED_NULL, "please enter proper message");
     }
+
+    public boolean validateMobileNumber(String mobileNumber)throws UserRegistrationException {
+        try{
+            if(validateInput(mobileNumberPattern, mobileNumber))
+                throw new UserRegistrationException(UserRegistrationException.ExceptionType.INVALID_INPUT, "please enter proper field");
+            return true;
+        }catch (NullPointerException e){
+            throw new UserRegistrationException(UserRegistrationException.ExceptionType.ENTERED_NULL, "please enter proper field");
+        }
     }
-    public boolean emailTesting(String email) {
-        return Pattern.matches(emailAddressPattern, email);
+
+    public boolean validateEmailAddressParameters(String emailAddress) {
+          return !validateInput(emailAddressPattern, emailAddress);
     }
+
 
     public void clearEmailList(){
         int i;
@@ -147,13 +129,15 @@ public class UserRegistration {
 
         UserRegistration userRegistration = new UserRegistration();
 
-        System.out.println(userRegistration.firstNameTesting("Mahesh"));
-        System.out.println(userRegistration.lastNameTesting("Kangude"));
-        System.out.println(userRegistration.emailAddressTesting("abc@com.in"));
-        System.out.println(userRegistration.mobileNumberTesting("91 8473652883"));
-        System.out.println(userRegistration.passwordTesting("fefe&Jrlm9fefef"));
+        System.out.println(userRegistration.validateFirstName("Mahesh"));
+        System.out.println(userRegistration.validateLastName("Kangude"));
+        System.out.println(userRegistration.validateEmailAddress("abc@com.in"));
+        System.out.println(userRegistration.validateMobileNumber("91 8473652883"));
+        System.out.println(userRegistration.validatePassword("fefe&Jrlm9fefef"));
         userRegistration.clearEmailList();
 
     }
+
+
 }
 
