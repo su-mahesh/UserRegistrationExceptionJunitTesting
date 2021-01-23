@@ -1,11 +1,8 @@
 package com.bridgelabz;
+import java.util.function.Predicate;
 import java.util.regex.Pattern;
 
-interface UserInputValidate{
-
-    boolean validateInput(String pattern, String input);
-}
-public class UserRegistration implements UserInputValidate{
+public class UserRegistration {
     final private String firstNamePattern = "[A-Z][a-z]{2,}";
     final private String lastNamePattern = "[A-Z][a-z]{2,}";
     final private String emailAddressPattern = "[A-Za-z0-9_][+A-Za-z0-9_-]*[.]?[+A-Za-z0-9_-]+[@]([A-Za-z0-9]+[.][A-Za-z]{2,63}|[A-Za-z0-9-]{2,}[.][A-Za-z0-9]{2,63}[.][A-Za-z]{2,3})";
@@ -37,14 +34,16 @@ public class UserRegistration implements UserInputValidate{
             "abc@gmail.com.1a",
             "abc@gmail.com.aa.au"
     };
-    @Override
-    public boolean validateInput(String pattern, String input) {
-        return !Pattern.matches(pattern, input);
-    }
+
+    Predicate<String> isValidFirstName = input -> !Pattern.matches(firstNamePattern, input);
+    Predicate<String> isValidLastName = input -> !Pattern.matches(lastNamePattern, input);
+    Predicate<String> isValidPassword = input -> !Pattern.matches(passwordPattern, input);
+    Predicate<String> isValidEmailAddress = input -> !Pattern.matches(emailAddressPattern, input);
+    Predicate<String> isValidMobileNumber = input -> !Pattern.matches(mobileNumberPattern, input);
 
     public boolean validateFirstName(String firstName)throws UserRegistrationException {
         try{
-            if(validateInput(firstNamePattern, firstName))
+            if(isValidFirstName.test(firstName))
                 throw new UserRegistrationException(UserRegistrationException.ExceptionType.INVALID_INPUT, "please enter proper field");
             return true;
         }catch (NullPointerException e){
@@ -54,7 +53,7 @@ public class UserRegistration implements UserInputValidate{
 
     public boolean validateLastName(String lastName)throws UserRegistrationException {
         try{
-            if(validateInput(lastNamePattern, lastName))
+            if(isValidLastName.test(lastName))
                 throw new UserRegistrationException(UserRegistrationException.ExceptionType.INVALID_INPUT, "please enter proper field");
             return true;
         }catch (NullPointerException e){
@@ -64,7 +63,7 @@ public class UserRegistration implements UserInputValidate{
 
     public boolean validateEmailAddress(String emailAddress)throws UserRegistrationException {
         try{
-            if(validateInput(emailAddressPattern, emailAddress))
+            if(isValidEmailAddress.test(emailAddress))
                 throw new UserRegistrationException(UserRegistrationException.ExceptionType.INVALID_INPUT, "please enter proper field");
             return true;
         }catch (NullPointerException e){
@@ -74,7 +73,7 @@ public class UserRegistration implements UserInputValidate{
 
     public boolean validatePassword(String password)throws UserRegistrationException {
         try{
-            if(validateInput(passwordPattern, password))
+            if(isValidPassword.test(password))
                 throw new UserRegistrationException(UserRegistrationException.ExceptionType.INVALID_INPUT, "please enter proper field");
             return true;
         }catch (NullPointerException e){
@@ -84,7 +83,7 @@ public class UserRegistration implements UserInputValidate{
 
     public boolean validateMobileNumber(String mobileNumber)throws UserRegistrationException {
         try{
-            if(validateInput(mobileNumberPattern, mobileNumber))
+            if(isValidMobileNumber.test(mobileNumber))
                 throw new UserRegistrationException(UserRegistrationException.ExceptionType.INVALID_INPUT, "please enter proper field");
             return true;
         }catch (NullPointerException e){
@@ -93,9 +92,8 @@ public class UserRegistration implements UserInputValidate{
     }
 
     public boolean validateEmailAddressParameters(String emailAddress) {
-          return !validateInput(emailAddressPattern, emailAddress);
+          return !isValidEmailAddress.test(emailAddress);
     }
-
 
     public void clearEmailList(){
         int i;

@@ -122,9 +122,4 @@ public class UserRegistrationTesting {
             Assert.assertEquals(UserRegistrationException.ExceptionType.ENTERED_NULL, e.exceptionType);
         }
     }
-
-
-
-
-
 }
